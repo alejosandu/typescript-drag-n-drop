@@ -1,0 +1,20 @@
+{
+  "name": "drag-and-drop",
+  "version": "1.0.0",
+  "description": "Drag and drop project to practice typescript",
+  "main": "index.js",
+  "scripts": {
+    "start": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "drag",
+    "drop",
+    "typescript"
+  ],
+  "author": "Alejandro Sanchez",
+  "license": "MIT",
+  "dependencies": {
+    "lite-server": "^2.5.4"
+  }
+}
