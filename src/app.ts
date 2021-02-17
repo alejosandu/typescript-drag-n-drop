@@ -136,7 +136,13 @@ class ProjectList {
         this.element = importedNode.firstElementChild as HTMLElement
         this.element.id = `${this.type}-projects`
 
-        projectState.addListener(this.renderProjects)
+        projectState.addListener((projects: Project[]) => {
+            const relevantProjects = projects.filter((p) => {
+                if(type === "active") return p.status === ProjectStatus.Active
+                return p.status === ProjectStatus.Finished
+            })
+            this.renderProjects(relevantProjects)
+        })
 
         this.attach()
         this.renderContent()
@@ -156,6 +162,7 @@ class ProjectList {
     renderProjects = (projects: Project[]) => {
         this.assignedProjects = projects
         const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement;
+        listEl.innerHTML = "";
         for (const project of projects) {
             const listItem = document.createElement("li")
             listItem.textContent = project.title
