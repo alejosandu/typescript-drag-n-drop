@@ -66,6 +66,14 @@ class ProjectState extends State<Project>{
         this.notifyListeners([...this.projects])
     }
 
+    moveProject(projectId: string, newStatus: ProjectStatus) {
+        const project = this.projects.find((p) => p.id === projectId)
+        if(project && project.status !== newStatus) {
+            project.status = newStatus
+            this.notifyListeners([...this.projects])
+        }
+    }
+
     notifyListeners = (data: Project[]): void => {
         for (const listener of this.listeners) {
             listener(data)
@@ -219,7 +227,8 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> implements Drag
         }
     }
     dropHangler(event: DragEvent): void {
-        console.log(event.dataTransfer?.getData('text/plain'));
+        const id = event.dataTransfer!.getData('text/plain')
+        projectState.moveProject(id, this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished)
     }
     dragLeaveHandler(event: DragEvent): void {
         console.log(event);

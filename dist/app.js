@@ -42,6 +42,13 @@ class ProjectState extends State {
         this.projects.push(newProject);
         this.notifyListeners([...this.projects]);
     }
+    moveProject(projectId, newStatus) {
+        const project = this.projects.find((p) => p.id === projectId);
+        if (project && project.status !== newStatus) {
+            project.status = newStatus;
+            this.notifyListeners([...this.projects]);
+        }
+    }
 }
 const projectState = ProjectState.instance;
 class Component {
@@ -168,8 +175,8 @@ class ProjectList extends Component {
         }
     }
     dropHangler(event) {
-        var _a;
-        console.log((_a = event.dataTransfer) === null || _a === void 0 ? void 0 : _a.getData('text/plain'));
+        const id = event.dataTransfer.getData('text/plain');
+        projectState.moveProject(id, this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished);
     }
     dragLeaveHandler(event) {
         console.log(event);
