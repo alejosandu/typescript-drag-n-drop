@@ -192,7 +192,7 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements 
     }
 }
 
-class ProjectList extends Component<HTMLDivElement, HTMLElement> {
+class ProjectList extends Component<HTMLDivElement, HTMLElement> implements DragTarget {
     assignedProjects: Project[] = []
     constructor(private type: 'active' | 'finished') {
         super("project-list", "app", false, `${type}-projects`)
@@ -209,8 +209,24 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
         this.renderContent()
     }
 
-    configure() {
+    dragOverHandler(event: DragEvent): void {
+        console.log(event);
+        const listEl = this.element.querySelector('ul')!
+        listEl.classList.add('droppable')
+    }
+    dropHangler(event: DragEvent): void {
+        console.log(event);
+    }
+    dragLeaveHandler(event: DragEvent): void {
+        console.log(event);
+        const listEl = this.element.querySelector('ul')!
+        listEl.classList.remove('droppable')
+    }
 
+    configure() {
+        this.element.addEventListener('dragover', this.dragOverHandler.bind(this))
+        this.element.addEventListener('dragleave', this.dragLeaveHandler.bind(this))
+        this.element.addEventListener('drop', this.dropHangler.bind(this))
     }
 
     renderContent = () => {
